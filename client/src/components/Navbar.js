@@ -1,9 +1,4 @@
-/**
- *
- * @author Anass Ferrak aka " TheLordA " <ferrak.anass@gmail.com>
- * GitHub repo: https://github.com/TheLordA/Instagram-Clone
- *
- */
+
 
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
