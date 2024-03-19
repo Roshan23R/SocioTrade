@@ -1,7 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Configuration folder for APIs Keys
-src/config/config.js
 # dependencies
 /node_modules
 /.pnp
@@ -23,5 +21,3 @@ src/config/config.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-debug.log
-
