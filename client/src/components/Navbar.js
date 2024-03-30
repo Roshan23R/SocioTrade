@@ -332,7 +332,7 @@ const Navbar = () => {
 					<Toolbar>
 						<Link to={state ? "/" : "/login"} className={classes.links}>
 							<Typography className={classes.title} variant="h4" noWrap>
-								Instagram Clone
+								SocioTrade
 							</Typography>
 						</Link>
 						<div className={classes.grow} />

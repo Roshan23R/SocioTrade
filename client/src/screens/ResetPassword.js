@@ -125,7 +125,7 @@ const Reset = () => {
 							gutterBottom
 							style={{ fontFamily: "Grand Hotel, cursive " }}
 						>
-							Instagram Clone
+							SocioTrade
 						</Typography>
 						{emailCheck ? (
 							<Alert variant="outlined" severity="error">

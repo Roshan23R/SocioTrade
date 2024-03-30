@@ -107,7 +107,7 @@ const Header = () => {
             <Link to="/">
               <img
                 src="/images/logo-full.png"
-                className="h-10 w-auto object-cover"
+                className="h-12 w-auto object-cover"
                 alt=""
               />
             </Link>
