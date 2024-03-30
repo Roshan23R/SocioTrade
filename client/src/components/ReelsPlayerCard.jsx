@@ -19,15 +19,36 @@ import { nFormatter } from "../utility";
 import { RWebShare } from "react-web-share";
 
 const ReelsVideoCard = ({ video }) => {
-  const { user } = useContext(AuthContext);
+  const { user, getTokenDetails,depositFunds } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timelineWidth, setTimelineWidth] = useState(0);
   const [buttonOpacity, setButtonOpacity] = useState(0);
+  const [tokenDetails, setTokenDetails] = useState({});
+  const [depositAmount, setDepositAmount] = useState(0);
+
+  const onHandleDepositChange = (e) => {
+   setDepositAmount(e.target.value);
+  }
+
+  const handleDepositLocked=async(e)=>{
+    e.preventDefault();
+    console.log(depositAmount);
+    await depositFunds(depositAmount,1);
+    // setIsDepositOpen(false);
+  }
   const videoRef = useRef();
 
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const tokenDetails = await getTokenDetails();
+        setTokenDetails(tokenDetails);
+      }
+    })();
+  });
   const callBack = (entries) => {
     const [entry] = entries;
     setIsPlaying(entry.isIntersecting);
@@ -69,6 +90,7 @@ const ReelsVideoCard = ({ video }) => {
         className="h-full w-full cursor-pointer object-cover"
         src={video?.src}
         preload="none"
+        
         playsInline
         muted={false}
         loading="lazy"
@@ -83,7 +105,7 @@ const ReelsVideoCard = ({ video }) => {
             (videoRef.current?.currentTime / videoRef.current?.duration) * 100
           )
         }
-        loop
+        // loop
       ></video>
       <div
         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-white text-8xl outline-none z-10"
@@ -118,8 +140,8 @@ const ReelsVideoCard = ({ video }) => {
         <div className="text-white text-center text-3xl">
           <button onClick={() => setIsDepositOpen(true)}>
             <FaMoneyCheckAlt />
-            <p className="text-xs mt-2 font-semibold">
-              2345 <br /> <span className="text-green-400">USDC</span>
+            <p className="text-xs mt-0 font-semibold">
+              <span className="text-green-400">Invest</span>
             </p>
           </button>
         </div>
@@ -260,17 +282,16 @@ const ReelsVideoCard = ({ video }) => {
             </button>
           </div>
           <div className="h-[100px] text-black z-50 flex flex-col gap-4 p-3 rounded-xl my-2 overflow-scroll">
-            <div className="flex items-center bg-white rounded-xl gap-2 w-full justify-between px-6 p-3">
-              <div className="flex-grow">
-                <a href="#" className="font-bold text-lg">
-                  Nikku.Dev
-                </a>
-                <p className="text-sm">Nikku.Dev</p>
+            <div className="flex items-center bg-white rounded-xl flex-col gap-2 w-full justify-between px-6 p-3">
+              <div>
+                <h1 className="text-green-400 font-bold text-start">Available Balance</h1>
               </div>
-              <div className="font-bold">
+              <div className="flex justify-between w-full items-baseline">
+                <p className="font-bold uppercase text-lg">
+                  {tokenDetails?.name}
+                </p>
                 <p className="font-bold">
-                  <LikedIcon />
-                  <p>23k USDC</p>
+                  {tokenDetails?.balance} {tokenDetails?.symbol}
                 </p>
               </div>
             </div>
@@ -283,13 +304,14 @@ const ReelsVideoCard = ({ video }) => {
               }}
             >
               <div className="flex gap-2 items-center">
-               
                 <input
                   type="text"
                   className="w-full border-2 border-gray-300 rounded-md text-sm p-2"
                   placeholder="Enter your Amount."
+                  name="depositAmount"
+                  onChange={(e) => onHandleDepositChange(e)}
                 />
-                <button className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
+                <button onClick={(e)=>handleDepositLocked(e)} className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
                   Deposit
                 </button>
               </div>

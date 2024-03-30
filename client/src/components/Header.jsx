@@ -126,7 +126,6 @@ const Header = () => {
                   <AddPostIcon size={35} />
                 </button>
 
-
                 <NavLink to="/reels">
                   <ReelFillIcon size={30} />
                 </NavLink>
