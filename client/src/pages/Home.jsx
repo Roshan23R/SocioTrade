@@ -71,10 +71,10 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex md:mt-14  max-w-5xl justify-around gap-x-20 mx-auto mb-8">
-        <div className="w-full md:w-[70%]">
+      <div className="flex md:mt-14  max-w-5xl gap-x-15 mx-auto mb-8">
+        <div id="feed" className="w-full md:w-[70%] overflow-auto justify-center">
           <Stories />
-          <div className="px-2">
+          <div className=" border-gray-200 rounded-md shadow-white"> 
             {posts?.map((post) => (
               <HomePostCard post={post} key={post?.id} />
             ))}
@@ -93,7 +93,10 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <div className="hidden w-[30%] md:mt-7 md:block md:w-[30%] p-3">
+        <div
+          id="sidebar"
+          className="hidden w-[30%] md:mt-7 md:block md:w-[20%] pr-20 fixed right-0 top-14"
+        >
           <div className="flex items-center justify-between w-full gap-2">
             <div>
               <img
@@ -105,20 +108,20 @@ const Home = () => {
             <div className="flex-grow">
               <Link
                 to={`/${userProfile?.username}`}
-                className="text-sm font-semibold text-gray-800"
+                className="text-sm font-semibold text-white hover:text-lg"
               >
                 {userProfile?.username}
               </Link>
-              <p className="text-gray-700 text-base">{userProfile?.fullName}</p>
+              <p className="text-gray-500 text-base">{userProfile?.fullName}</p>
             </div>
             <div className="text-sm font-bold text-blue-500">Switch</div>
           </div>
           <div>
             <div className="flex text-sm items-center my-2 justify-between">
-              <div className="text-gray-700  font-semibold">
+              <div className="text-white font-semibold">
                 Suggestions For You
               </div>
-              <button className="text-slate-800 font-bold">See All</button>
+              <button className="text-white font-bold">See All</button>
             </div>
           </div>
           <div>
@@ -138,11 +141,11 @@ const Home = () => {
                   <div>
                     <Link
                       to={`/${item?.username}`}
-                      className="text-sm font-semibold text-gray-800"
+                      className="text-sm font-semibold text-white"
                     >
                       {item?.username}
                     </Link>
-                    <p className="text-[10px] text-gray-500">{item.fullName}</p>
+                    <p className="text-[10px] text-gray-400">{item.fullName}</p>
                   </div>
                 </div>
                 <Link

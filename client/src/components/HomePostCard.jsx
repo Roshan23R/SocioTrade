@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import { Link } from "react-router-dom";
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 // Import Swiper React components
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
@@ -16,6 +16,7 @@ import { Pagination } from "swiper";
 // import { motion } from "framer-motion";
 
 // icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CgHeart as HeartIcon } from "react-icons/cg";
 import { FaHeart as HeartFillIcon } from "react-icons/fa";
 import { RiChat3Line as CommentIcon } from "react-icons/ri";
@@ -172,9 +173,9 @@ const HomePostCard = ({ post }) => {
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="sm:mb-6 bg-white sm:border-[1px] rounded shadow-lg border-slate-500/30"
+      className="sm:mb-6 bg-black rounded-lg border-gray-200 border-4 shadow-white"
     >
-      <div className="flex gap-3 items-center p-2 justify-between">
+      <div className="flex gap-3 items-center p-2 rounded-md justify-between">
         <Link to={`/${post?.user?.username}`}>
           <img
             src={
@@ -186,7 +187,10 @@ const HomePostCard = ({ post }) => {
           />
         </Link>
         <div className="flex-grow">
-          <Link to={`/${post?.user?.username}`} className="font-semibold">
+          <Link
+            to={`/${post?.user?.username}`}
+            className="font-semibold text-white"
+          >
             {post?.user?.username}
           </Link>
         </div>
@@ -247,42 +251,48 @@ const HomePostCard = ({ post }) => {
           <div className="flex w-full text-slate-900 gap-2">
             {liked ? (
               <button onClick={unlikePost}>
-                <HeartFillIcon color="#ff2828" />
+                <HeartFillIcon color="red" />
               </button>
             ) : (
               <button onClick={likePost}>
-                <HeartIcon size={25} />
+                <HeartIcon color="white" />
               </button>
             )}
             <button>
-              <CommentIcon />
+              <CommentIcon color="white" />
             </button>
             <button>
-              <SendIcon />
+              <SendIcon color="white" />
             </button>
           </div>
           <button onClick={saved ? unsavePost : savePost}>
             {saved ? <TagFillIcon /> : <TagIcon />}
           </button>
         </div>
-        <div className="text-sm font-semibold">
+        <div className="text-sm font-semibold text-[#f5f5f5]">
           {post?.likedBy?.length > 0 && (
             <>{post?.likedBy?.length?.toLocaleString()} likes</>
           )}
           <div className="my-2">
             {post?.caption && (
-              <div className="text-sm text-gray-700">
-                <Link to={`/${post.user.username}`} className="font-bold">
+              <div className="text-sm text-white">
+                <Link
+                  to={`/${post.user.username}`}
+                  className="font-bold text-white"
+                >
                   {post?.user?.username}
-                </Link>{" "}
-                {post?.caption}
+                </Link>
+                <span className="font-bold text-gray-400">
+                  {" "}
+                  {post?.caption}
+                </span>
               </div>
             )}
           </div>
           {commentsArr?.length > 0 && (
             <div
               onClick={() => setLimitNum(limitNum + 5)}
-              className="block text-xs my-3 text-slate-600 cursor-pointer"
+              className="block text-xs my-3 text-slate-600 py-2 sm:border-t-[1px] border-slate-500/30 cursor-pointer"
             >
               View more comments
             </div>
@@ -305,7 +315,7 @@ const HomePostCard = ({ post }) => {
                 </Link>
               </div>
               <div className="flex flex-grow gap-1">
-                <b className="inline-flex">
+                <b className="inline-flex text-white">
                   <Link to={`/${comment?.username}`}>{comment?.username}</Link>
                   {comment?.isVerified && (
                     <span className="aspect-square rounded-full text-blue-500">
@@ -313,7 +323,7 @@ const HomePostCard = ({ post }) => {
                     </span>
                   )}
                 </b>
-                <span className="font-normal">
+                <span className="font-normal text-gray-400">
                   {comment?.comment?.length > 20
                     ? `${comment?.comment?.slice(0, 20)}...`
                     : comment?.comment}
@@ -324,13 +334,13 @@ const HomePostCard = ({ post }) => {
           ))}
         </div>
       </div>
-      <div className=" sm:block sm:border-t-[1px] text-slate-900 p-3 border-slate-500/30">
+      <div className=" sm:block sm:border-t-[1px] text-gray-400 p-3 border-slate-500/30">
         <form onSubmit={commentSubmit}>
           <div className="flex items-center gap-3">
-            <SmileIcon size={24} />
+            <SmileIcon size={24} color="blue" />
             <input
               type="text"
-              className="w-full text-sm outline-none font-light"
+              className="w-full text-sm outline-none font-light rounded-md bg-transparent border-none text-white"
               placeholder="Add a comment..."
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
