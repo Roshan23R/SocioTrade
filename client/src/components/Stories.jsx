@@ -4,13 +4,13 @@ import { FakeUsers } from "../constants/fakeData";
 
 const StoriyCard = ({ image, username }) => {
   return (
-    <div>
+    <div className="w-16">
       <LazyLoadImage
         className="h-14 w-14 rounded-full p-[1.5px] aspect-square border-red-500 border-2 object-contain cursor-pointer hover:scale-110 transition transform duration-200 ease-out"
         src={image}
         alt={username}
       />
-      <p className="text-xs w-14 truncate text-center">
+      <p className="mt-2 text-xs w-14 truncate text-center text-slate-200">
         {username?.length > 10 ? `${username.slice(0, 10)}..` : username}
       </p>
     </div>
@@ -19,8 +19,8 @@ const StoriyCard = ({ image, username }) => {
 
 const Stories = () => {
   return (
-    <main className=" md:mb-7 max-w-4xl mx-auto shadow-lg">
-      <div className="flex space-x-2 p-6 w-full bg-white mt-8 border-gray-200 border rounded-sm overflow-x-scroll scrollbar-thin scrollbar-thumb-black">
+    <main className=" md:mb-7 max-w-4xl mx-auto rounded-md shadow-white bg-inherit">
+      <div className="flex space-x-2 p-6 pr-6 w-full bg-black mt-8 border-gray-200 border-4 rounded-md shadow-md overflow-x-scroll scrollbar-thin scrollbar-thumb-black">
         {FakeUsers.map((item, index) => (
           <StoriyCard
             key={index}

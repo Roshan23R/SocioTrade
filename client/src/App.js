@@ -7,7 +7,6 @@ const App = () => {
   return (
     <AuthentificationState>
       <Routing />
-     
     </AuthentificationState>
   );
 };

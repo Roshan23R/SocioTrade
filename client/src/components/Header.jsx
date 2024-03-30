@@ -127,7 +127,7 @@ const Header = () => {
                 </button>
 
                 <NavLink to="/reels">
-                  <ReelFillIcon size={30} />
+                  <ReelFillIcon size={35} />
                 </NavLink>
 
                 <NavLink to="/explore">
@@ -140,7 +140,7 @@ const Header = () => {
                     onClick={() => setMenuOpen(!menuOpen)}
                   >
                     <img
-                      className="h-6 md:border-[1px] border-slate-900 rounded-full aspect-square"
+                      className="h-9 md:border-[1px] border-slate-900 rounded-full aspect-square"
                       // src={
                       //   "https://lh3.googleusercontent.com/a-/AOh14Gh94MS2OYdnk63M-e_5MLwokYLufFvBMzlHp93wtg=s96-c"
                       // }
@@ -155,8 +155,8 @@ const Header = () => {
                               to={`/${user?.username}`}
                               className="flex items-center gap-1"
                             >
-                              <div>
-                                <ProfileIcon size={35} />
+                              <div className="w-50">
+                                <ProfileIcon size={60} />
                               </div>
                               <div>Profile</div>
                             </Link>
@@ -199,8 +199,8 @@ const Header = () => {
                     )}
                   </div>
                 ) : (
-                  <NavLink to="/login">
-                    <ProfileIcon size={35} />
+                  <NavLink to="/login" >
+                    <ProfileIcon size={60} />
                   </NavLink>
                 )}
 
