@@ -9,7 +9,9 @@ import {
   FaRegHeart as LikeIcon,
   FaShare as ShareIcon,
   FaCommentDots as CommentIcon,
+  FaMoneyCheckAlt,
 } from "react-icons/fa";
+
 import { MdVerified as VerifiedIcon } from "react-icons/md";
 import { IoClose as CloseIcon } from "react-icons/io5";
 import { ImMusic as SongIcon } from "react-icons/im";
@@ -22,6 +24,7 @@ const ReelsVideoCard = ({ video }) => {
   const { user } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timelineWidth, setTimelineWidth] = useState(0);
   const [buttonOpacity, setButtonOpacity] = useState(0);
@@ -96,17 +99,6 @@ const ReelsVideoCard = ({ video }) => {
         </button>
       </div>
       <div className="absolute flex flex-col items-center gap-7 bottom-36 right-2">
-        <div className="relative">
-          <img
-            src={video?.user?.avatar}
-            alt={video?.user?.username}
-            loading="lazy"
-            className="h-14 aspect-square rounded-full border-2 border-white"
-          />
-          <button className="absolute -bottom-2 text-white aspect-square rounded-full left-1/2 -translate-x-1/2 bg-pink-500">
-            <AddIcon />
-          </button>
-        </div>
         <div
           className={`${
             liked ? "text-red-500" : "text-white"
@@ -122,6 +114,14 @@ const ReelsVideoCard = ({ video }) => {
             <CommentIcon />
             <p className="text-xs mt-2">
               {nFormatter(video?.data?.comments?.length)}
+            </p>
+          </button>
+        </div>
+        <div className="text-white text-center text-3xl">
+          <button onClick={() => setIsDepositOpen(true)}>
+            <FaMoneyCheckAlt />
+            <p className="text-xs mt-2 font-semibold">
+              2345 <br /> <span className="text-green-400">USDC</span>
             </p>
           </button>
         </div>
@@ -243,6 +243,56 @@ const ReelsVideoCard = ({ video }) => {
                 />
                 <button className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
                   Comment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {isDepositOpen && (
+        <div className="absolute bottom-0 left-0 w-full h-auto p-4 bg-gray-200 z-30 rounded-lg rounded-l-lg">
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-lg">Deposit Funds</div>
+            <button
+              className="text-2xl aspect-square"
+              onClick={() => setIsDepositOpen(false)}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <div className="h-[100px] text-black z-50 flex flex-col gap-4 p-3 rounded-xl my-2 overflow-scroll">
+            <div className="flex items-center bg-white rounded-xl gap-2 w-full justify-between px-6 p-3">
+              <div className="flex-grow">
+                <a href="#" className="font-bold text-lg">
+                  Nikku.Dev
+                </a>
+                <p className="text-sm">Nikku.Dev</p>
+              </div>
+              <div className="font-bold">
+                <p className="font-bold">
+                  <LikedIcon />
+                  <p>23k USDC</p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <form
+              action=""
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <div className="flex gap-2 items-center">
+               
+                <input
+                  type="text"
+                  className="w-full border-2 border-gray-300 rounded-md text-sm p-2"
+                  placeholder="Enter your Amount."
+                />
+                <button className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
+                  Deposit
                 </button>
               </div>
             </form>

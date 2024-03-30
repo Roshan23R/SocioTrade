@@ -13,8 +13,6 @@ import { MdHomeFilled as HomeIcon } from "react-icons/md";
 import { RiMessengerLine as ChatIcon } from "react-icons/ri";
 import { CgAddR as AddPostIcon } from "react-icons/cg";
 import { ImCompass2 as ExploreIcon } from "react-icons/im";
-import { FiHeart as HeartIcon } from "react-icons/fi";
-import { AiOutlineSearch as SearchIcon } from "react-icons/ai";
 import { CgProfile as ProfileIcon } from "react-icons/cg";
 import { VscClose as CloseIcon } from "react-icons/vsc";
 import { ImSpinner3 as SpinnerIcon } from "react-icons/im";
@@ -38,7 +36,8 @@ import { signOut } from "firebase/auth";
 import Swiper, { Pagination } from "swiper";
 import { SwiperSlide } from "swiper/react";
 import { ReelFillIcon, ReelIcon } from "../constants/icons";
-
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const [modelOpen, setModelOpen] = useState(false);
@@ -49,6 +48,7 @@ const Header = () => {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const {address} = useAccount();
 
   const uploadImage = (e) => {
     e.preventDefault();
@@ -102,7 +102,7 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-white border-b-[1px] z-50">
-        <div className="p-2 max-w-4xl mx-auto  flex items-center justify-between ">
+        <div className="p-2 w-full  container mx-auto  flex items-center justify-between ">
           <div>
             <Link to="/">
               <img
@@ -112,20 +112,7 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div>
-            <div className="hidden sm:block p-2 rounded-lg bg-gray-200 items-center">
-              <form onSubmit={(e) => e.preventDefault()}>
-                <div className="flex gap-2 text-gray-600">
-                  <SearchIcon size={20} />
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="bg-transparent h-full outline-none"
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
+         
           {user ? (
             <>
               <div className="flex items-center text-slate-800 text-2xl gap-3">
@@ -141,6 +128,8 @@ const Header = () => {
                 <NavLink to="/explore">
                   <ExploreIcon size={20} />
                 </NavLink>
+
+
                 <NavLink to="/reels">
                   <ReelFillIcon size={22} />
                 </NavLink>
@@ -213,6 +202,14 @@ const Header = () => {
                     <ProfileIcon />
                   </NavLink>
                 )}
+
+                <ConnectButton
+                showBalance={true}
+                  accountStatus={{
+                    smallScreen: "avatar",
+                    largeScreen: "full",
+                  }}
+                />
               </div>
             </>
           ) : (
@@ -229,6 +226,14 @@ const Header = () => {
               >
                 Sign Up
               </Link>
+
+              <ConnectButton
+                showBalance={true}
+                  accountStatus={{
+                    smallScreen: "avatar",
+                    largeScreen: "full",
+                  }}
+                />
             </div>
           )}
         </div>

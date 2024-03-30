@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import { Link } from "react-router-dom";
-
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 // Import Swiper React components
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
