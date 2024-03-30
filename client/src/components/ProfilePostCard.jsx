@@ -11,6 +11,7 @@ import { nFormatter } from "../utility";
 import { Link } from "react-router-dom";
 
 const ProfilePostCard = ({ post, span }) => {
+
   return (
     <motion.div
       layout

@@ -26,6 +26,9 @@ const Routing = () => {
   return (
     <>
       <BrowserRouter>
+	  <Toaster
+		position="top-right"
+      />
         <Switch>
           {/* Public routes */}
           <Route exact path="/login" component={Login} />
@@ -48,18 +51,7 @@ const Routing = () => {
           {/* <Route component={NotFound} /> */}
         </Switch>
       </BrowserRouter>
-      <Toaster
-        toastOptions={{
-          className: "",
-          style: {
-            border: "1px solid #713200",
-            padding: "16px",
-            color: "#713200",
-          },
-        }}
-		position="top-right"
-		duration={5000}
-      />
+      
     </>
   );
 };

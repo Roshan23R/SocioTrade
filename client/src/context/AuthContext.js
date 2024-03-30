@@ -123,6 +123,25 @@ const AuthProvider = ({ children }) => {
       toast.error("Error in depositing funds");
     }
   };
+
+  function sellYourFunds(amount, postId) {
+    try {
+      const contractInstance = getContractInstance(
+        mainContractAddress,
+        mainContractABI
+      );
+      let txId = toast.loading("Selling your funds...");
+      const tx = contractInstance.sellYourFunds(amount, postId, {
+        from: address,
+      });
+      tx.wait();
+      toast.success("Funds Sold", { id: txId });
+      return tx;
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in selling funds");
+    }
+  }
   useEffect(() => {
     if (!signer) return;
   }, [signer, address]);
@@ -188,7 +207,7 @@ const AuthProvider = ({ children }) => {
       await setDoc(doc(firestore, "user", `${user?.uid}`), {
         userId: user?.uid,
         biography: "Hey there! I am new in this SocioTrade.",
-        categoryName: "Normal User",
+        categoryName: "Admin User",
         following: ["bZdyCDBdUjgxFxhXLRBGzQh05k12"],
         fullName: fullname,
         photoURL:
@@ -214,7 +233,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, signUp, getTokenDetails,depositFunds }}
+      value={{ user, login, logout, signUp, getTokenDetails,depositFunds,sellYourFunds }}
     >
       {loading || children}
     </AuthContext.Provider>

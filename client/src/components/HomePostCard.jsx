@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import { Link } from "react-router-dom";
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+
 // Import Swiper React components
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
@@ -41,16 +41,30 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/config";
 import { AuthContext } from "../context/AuthContext";
-
+import { FaMoneyCheckAlt } from "react-icons/fa";
+import { IoClose as CloseIcon } from "react-icons/io5";
 const HomePostCard = ({ post }) => {
   const [commentInput, setCommentInput] = useState("");
   const [commentsArr, setCommentsArr] = useState([]);
   const [limitNum, setLimitNum] = useState(2);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user,depositFunds,getTokenDetails } = useContext(AuthContext);
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
+  const [tokenDetails, setTokenDetails] = useState({});
+  
   const swiper = useSwiper();
-
+  const onHandleDepositChange = (e) => {
+    setDepositAmount(e.target.value);
+   }
+ 
+   const handleDepositLocked=async(e)=>{
+     e.preventDefault();
+     console.log(depositAmount);
+     await depositFunds(depositAmount,1);
+     setIsDepositOpen(false);
+   }
   const likePost = async () => {
     const postRef = doc(firestore, `posts/${post?.id}`);
     updateDoc(
@@ -138,7 +152,14 @@ const HomePostCard = ({ post }) => {
     addDoc(commentsCollectionRef, commentData);
     setCommentInput("");
   };
-
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const tokenDetails = await getTokenDetails();
+        setTokenDetails(tokenDetails);
+      }
+    })();
+  });
   useEffect(() => {
     // console.log(user);
     const getComments = async () => {
@@ -260,11 +281,65 @@ const HomePostCard = ({ post }) => {
             <button>
               <SendIcon />
             </button>
+            <button onClick={() => setIsDepositOpen(true)}>
+              <FaMoneyCheckAlt />
+            </button>
           </div>
           <button onClick={saved ? unsavePost : savePost}>
             {saved ? <TagFillIcon /> : <TagIcon />}
           </button>
         </div>
+        <div className="relative">
+        {isDepositOpen && (
+        <div className="absolute bottom-0 left-0 w-full h-auto p-4 bg-gray-200 z-30 rounded-lg rounded-l-lg">
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-lg">Deposit Funds</div>
+            <button
+              className="text-2xl aspect-square"
+              onClick={() => setIsDepositOpen(false)}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <div className="h-[100px] text-black z-50 flex flex-col gap-4 p-3 rounded-xl my-2 overflow-scroll">
+            <div className="flex items-center bg-white rounded-xl flex-col gap-2 w-full justify-between px-6 p-3">
+              <div>
+                <h1 className="text-green-400 font-bold text-start">Available Balance</h1>
+              </div>
+              <div className="flex justify-between w-full items-baseline">
+                <p className="font-bold uppercase text-lg">
+                  {tokenDetails?.name}
+                </p>
+                <p className="font-bold">
+                  {tokenDetails?.balance} {tokenDetails?.symbol}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <form
+              action=""
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <div className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  className="w-full border-2 border-gray-300 rounded-md text-sm p-2"
+                  placeholder="Enter your Amount."
+                  name="depositAmount"
+                  onChange={(e) => onHandleDepositChange(e)}
+                />
+                <button onClick={(e)=>handleDepositLocked(e)} className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
+                  Deposit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      </div>
         <div className="text-sm font-semibold">
           {post?.likedBy?.length > 0 && (
             <>{post?.likedBy?.length?.toLocaleString()} likes</>
@@ -324,6 +399,7 @@ const HomePostCard = ({ post }) => {
           ))}
         </div>
       </div>
+      
       <div className=" sm:block sm:border-t-[1px] text-slate-900 p-3 border-slate-500/30">
         <form onSubmit={commentSubmit}>
           <div className="flex items-center gap-3">
@@ -345,6 +421,7 @@ const HomePostCard = ({ post }) => {
           </div>
         </form>
       </div>
+      
     </div>
   );
 };

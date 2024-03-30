@@ -37,6 +37,7 @@ const Explore = () => {
     };
     return getData();
   }, [limitNum]);
+
   return (
     <div>
       <Header />
