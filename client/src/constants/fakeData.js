@@ -11,12 +11,12 @@ export const FakeUsers = [
     username: "deadofwrite",
     name: "Priscilla Knowles",
   },
-  {
-    photoURL:
-      "https://www.hotfootdesign.co.uk/wp-content/uploads/2016/05/d5jA8OZv.jpg",
-    username: "true.living",
-    name: "Dale Bell",
-  },
+  // {
+  //   photoURL:
+  //     "https://www.hotfootdesign.co.uk/wp-content/uploads/2016/05/d5jA8OZv.jpg",
+  //   username: "true.living",
+  //   name: "Dale Bell",
+  // },
   {
     photoURL:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=100",
