@@ -141,7 +141,7 @@ const Profile = () => {
       <Header />
       <div className="mt-16 min-h-screen">
         {profileUser && (
-          <main className="bg-gray-100 bg-opacity-25">
+          <main className="bg-[#0f0f0f] bg-opacity-25 text-white">
             <div className="lg:max-w-5xl lg:mx-auto mb-8">
               <header className="flex flex-wrap items-center p-4 md:py-8">
                 <div className="md:w-3/12 md:ml-16">
@@ -248,19 +248,19 @@ const Profile = () => {
                   {/* post, following, followers list for medium screens */}
                   <ul className="hidden md:flex space-x-8 mb-4">
                     <li>
-                      <span className="font-semibold">
+                      <span className="font-semibold text-slate-400">
                         {profileUser?.posts?.length || 0}{" "}
                       </span>
                       posts
                     </li>
                     <li>
-                      <span className="font-semibold">
+                      <span className="font-semibold text-slate-400">
                         {profileUser?.followedBy?.length || 0}{" "}
                       </span>
                       followers
                     </li>
                     <li>
-                      <span className="font-semibold">
+                      <span className="font-semibold text-slate-400">
                         {profileUser?.following?.length || 0}{" "}
                       </span>
                       following
@@ -269,7 +269,7 @@ const Profile = () => {
                   {/* user meta form medium screens */}
                   <div className="hidden md:block">
                     <h1 className="font-semibold">{profileUser?.fullName}</h1>
-                    <p className="font-normal text-sm text-gray-600">
+                    <p className="font-normal text-sm text-gray-500">
                       {profileUser?.categoryName}
                     </p>
                     <p
@@ -306,7 +306,7 @@ const Profile = () => {
                 </div>
               </header>
               {/* posts */}
-              <div className="px-px md:px-3">
+              <div className="px-2 md:px-3">
                 {/* user following for mobile only */}
                 <ul
                   className="flex md:hidden justify-around space-x-8 border-t 
@@ -339,7 +339,7 @@ const Profile = () => {
                 )}
                 <motion.div
                   layout
-                  className="grid grid-cols-3 md:gap-8 gap-1 md:p-2 p-1"
+                  className="mt-2 grid grid-cols-4 md:gap-8 gap-1 md:p-2 p-1"
                 >
                   {posts?.reverse().map((post, index) => (
                     <ProfilePostCard key={index} post={post} />

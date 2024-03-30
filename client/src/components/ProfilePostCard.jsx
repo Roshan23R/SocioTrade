@@ -7,6 +7,7 @@ import { IoCopy as CollectionIcon } from "react-icons/io5";
 import { FaPlay as PlayIcon } from "react-icons/fa";
 import { FaComment as CommentIcon } from "react-icons/fa";
 import { AiFillHeart as HeartIcon } from "react-icons/ai";
+import { FaSellcast } from "react-icons/fa";
 import { nFormatter } from "../utility";
 import { Link } from "react-router-dom";
 
@@ -25,9 +26,9 @@ const ProfilePostCard = ({ post, span }) => {
             {post?.carouselMedia && <CollectionIcon className="rotate-180" />}
           </div>
           {/* overlay*/}
-          <div className="absolute text-white opacity-0 group-hover:opacity-100 transition-all cursor-pointer h-full w-full bg-black/40 z-10">
+          <div className="absolute text-white rounded-sm opacity-0 group-hover:opacity-100 transition-all cursor-pointer h-full w-full bg-black/40 z-10">
             <div className="flex h-full justify-center items-center">
-              <div className="flex flex-col md:text-xl text-sm md:flex-row md:gap-6">
+              <div className="flex flex-col md:text-xl rounded-sm text-sm md:flex-row md:gap-6">
                 <div className="flex items-center">
                   <HeartIcon />
                   <span className="ml-2">
@@ -38,6 +39,12 @@ const ProfilePostCard = ({ post, span }) => {
                   <CommentIcon />
                   <span className="ml-2">
                     {post?.comments?.toLocaleString() || 0}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <FaSellcast />
+                  <span className="ml-2">
+                    {nFormatter(10)}
                   </span>
                 </div>
               </div>
