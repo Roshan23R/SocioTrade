@@ -102,7 +102,7 @@ const Header = () => {
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-white border-b-[1px] z-50">
-        <div className="p-2 w-full  container mx-auto  flex items-center justify-between ">
+        <div className="p-2 w-full  mx-auto  flex items-center justify-between ">
           <div>
             <Link to="/">
               <img
@@ -117,22 +117,24 @@ const Header = () => {
             <>
               <div className="flex items-center text-slate-800 text-2xl gap-3">
                 <NavLink to="/">
-                  <HomeIcon />
+                  <HomeIcon size={35} />
                 </NavLink>
                 <div>
-                  <ChatIcon />
+                  <ChatIcon size={35} />
                 </div>
                 <button onClick={() => setModelOpen(true)}>
-                  <AddPostIcon />
+                  <AddPostIcon size={35} />
                 </button>
-                <NavLink to="/explore">
-                  <ExploreIcon size={20} />
-                </NavLink>
 
 
                 <NavLink to="/reels">
-                  <ReelFillIcon size={22} />
+                  <ReelFillIcon size={30} />
                 </NavLink>
+
+                <NavLink to="/explore">
+                  <ExploreIcon size={35} />
+                </NavLink>
+
                 {user ? (
                   <div
                     className="relative cursor-pointer"
@@ -155,7 +157,7 @@ const Header = () => {
                               className="flex items-center gap-1"
                             >
                               <div>
-                                <ProfileIcon />
+                                <ProfileIcon size={35} />
                               </div>
                               <div>Profile</div>
                             </Link>
@@ -163,7 +165,7 @@ const Header = () => {
                           <li onClick={() => setMenuOpen(!menuOpen)}>
                             <div className="flex items-center gap-1">
                               <div>
-                                <SavedIcon />
+                                <SavedIcon size={35} />
                               </div>
                               <div>Saved</div>
                             </div>
@@ -171,7 +173,7 @@ const Header = () => {
                           <li onClick={() => setMenuOpen(!menuOpen)}>
                             <div className="flex items-center gap-1">
                               <div>
-                                <SettingIcon />
+                                <SettingIcon size={35} />
                               </div>
                               <div>Setting</div>
                             </div>
@@ -179,7 +181,7 @@ const Header = () => {
                           <li onClick={() => setMenuOpen(!menuOpen)}>
                             <div className="flex items-center gap-1">
                               <div>
-                                <SwitchIcon />
+                                <SwitchIcon size={35} />
                               </div>
                               <div>Switch</div>
                             </div>
@@ -199,7 +201,7 @@ const Header = () => {
                   </div>
                 ) : (
                   <NavLink to="/login">
-                    <ProfileIcon />
+                    <ProfileIcon size={35} />
                   </NavLink>
                 )}
 
@@ -248,7 +250,7 @@ const Header = () => {
             onClick={() => setModelOpen(false)}
             className="absolute md:top-7 md:right-10 top-5 right-3 text-white md:text-5xl text-3xl"
           >
-            <CloseIcon color="#fff" />
+            <CloseIcon size={35} color="#fff" />
           </button>
           <div className="p-3 rounded-lg overflow-hidden">
             <div className="bg-white rounded-lg">

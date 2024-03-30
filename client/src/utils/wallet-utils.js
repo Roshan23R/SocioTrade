@@ -1,9 +1,9 @@
-import { polygon, polygonMumbai, arbitrum } from "wagmi/chains";
+import { polygon, polygonMumbai, arbitrum,optimismSepolia } from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig } from "wagmi";
 const { chains, publicClient } = configureChains(
-  [polygon, arbitrum, polygonMumbai],
+  [polygon, arbitrum, polygonMumbai,optimismSepolia],
   [
     jsonRpcProvider({
       rpc: (chainId) => {
@@ -22,6 +22,12 @@ const { chains, publicClient } = configureChains(
         } else if (chainId.id == 80001) {
           return {
             http: "https://polygon-mumbai.g.alchemy.com/v2/EaKu789oxhWzYFvzEzOPAkCqIl2CwKj5",
+            webSocket:
+              "wss://polygon-mumbai.g.alchemy.com/v2/EaKu789oxhWzYFvzEzOPAkCqIl2CwKj5",
+          };
+        } else if (chainId.id == 11155420) {
+          return {
+            http: "https://sepolia.optimism.io",
             webSocket:
               "wss://polygon-mumbai.g.alchemy.com/v2/EaKu789oxhWzYFvzEzOPAkCqIl2CwKj5",
           };

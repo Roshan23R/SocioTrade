@@ -1,4 +1,7 @@
 import { createContext, useEffect, useState } from "react";
+import { useAccount, usePublicClient, useNetwork } from "wagmi";
+import { useEthersSigner } from "../utils/signer.ts";
+import { ethers, BigNumber } from "ethers";
 import {
   addDoc,
   arrayUnion,
@@ -15,10 +18,67 @@ import {
   signOut,
 } from "firebase/auth";
 
+import { tokenAddress, tokenAbi } from "../constants/contract-constant";
+
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { address } = useAccount();
+  const { chains, chain } = useNetwork();
+  const [activeChain, setActiveChainId] = useState(chain?.id);
+
+  useEffect(() => {
+    setActiveChainId(chain?.id);
+  }, [chain?.id]);
+  const signer = useEthersSigner(activeChain);
+
+  /**
+   *
+   * @param {any contract Address} contractAddress
+   * @param {any contract Abi} contractAbi
+   * @returns contract instance
+   * @dev This function is used to get the contract instance
+   */
+  const getContractInstance = async (contractAddress, contractAbi) => {
+    try {
+      let contractInstance = new ethers.Contract(
+        contractAddress,
+        contractAbi,
+        signer
+      );
+      return contractInstance;
+    } catch (error) {
+      console.log("Error in deploying contract");
+    }
+  };
+
+  const getTokenDetails = async () => {
+    try {
+      const degoTokenContract = await getContractInstance(
+        tokenAddress,
+        tokenAbi
+      );
+      const degoTokenBalance = await degoTokenContract.balanceOf(address);
+      const decimals = await degoTokenContract.decimals();
+      const name = await degoTokenContract.name();
+      const symbol = await degoTokenContract.symbol();
+
+      return {
+        balance: BigNumber.from(degoTokenBalance)
+          .div(BigNumber.from(10).pow(decimals))
+          .toString(),
+        decimals,
+        name,
+        symbol,
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (!signer) return;
+  }, [signer, address]);
   useEffect(() => {
     const getUser = async () => {
       onAuthStateChanged(auth, async (user) => {
@@ -106,7 +166,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signUp }}>
+    <AuthContext.Provider value={{ user, login, logout, signUp,getTokenDetails }}>
       {loading || children}
     </AuthContext.Provider>
   );

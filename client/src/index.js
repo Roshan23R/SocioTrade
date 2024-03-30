@@ -9,16 +9,16 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { wagmiConfig, chains } from "./utils/wallet-utils";
 
-
 ReactDOM.render(
-  <AuthProvider>
-    <AnimatePresence>
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-      <App />
-      </RainbowKitProvider>
-      </WagmiConfig>
-    </AnimatePresence>
-  </AuthProvider>,
+  <WagmiConfig config={wagmiConfig}>
+    <RainbowKitProvider chains={chains}>
+      <AuthProvider>
+        <AnimatePresence>
+          <App />
+        </AnimatePresence>
+      </AuthProvider>
+    </RainbowKitProvider>
+  </WagmiConfig>,
+
   document.getElementById("root")
 );

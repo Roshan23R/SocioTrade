@@ -1,7 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
-// icons
-import { IoIosAdd as AddIcon } from "react-icons/io";
 import {
   FaPlay as PlayIcon,
   FaPause as PauseIcon,
