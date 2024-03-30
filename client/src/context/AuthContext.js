@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { useAccount, usePublicClient, useNetwork } from "wagmi";
 import { useEthersSigner } from "../utils/signer.ts";
 import { ethers, BigNumber } from "ethers";
+import { toast } from "react-hot-toast";
 import {
   addDoc,
   arrayUnion,
@@ -18,7 +19,12 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { tokenAddress, tokenAbi } from "../constants/contract-constant";
+import {
+  tokenAddress,
+  tokenAbi,
+  mainContractABI,
+  mainContractAddress,
+} from "../constants/contract-constant";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -74,6 +80,47 @@ const AuthProvider = ({ children }) => {
       };
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const depositFunds = async (amount, postId) => {
+    try {
+
+      let approveId = toast.loading("Approving transaction...");
+      const degoTokenContract = await getContractInstance(
+        tokenAddress,
+        tokenAbi
+      );
+      //make amount as per decimals 
+      amount = BigNumber.from(amount).mul(
+        BigNumber.from(10).pow(await degoTokenContract.decimals())
+      );
+      const approvetx = await degoTokenContract.approve(
+        mainContractAddress,
+        amount,
+        { from: address }
+      );
+
+      await approvetx.wait();
+
+      toast.success("Limit Approved", { id: approveId });
+
+      const contractInstance = await getContractInstance(
+        mainContractAddress,
+        mainContractABI
+      );
+
+      let txId = toast.loading("Depositing funds to this Content...");
+      const tx = await contractInstance.depositFunds(amount, postId, {
+        from: address,
+      });
+      await tx.wait();
+      toast.success("Funds Deposited", { id: txId });
+
+      return tx;
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in depositing funds");
     }
   };
   useEffect(() => {
@@ -166,7 +213,9 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signUp,getTokenDetails }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, signUp, getTokenDetails,depositFunds }}
+    >
       {loading || children}
     </AuthContext.Provider>
   );
