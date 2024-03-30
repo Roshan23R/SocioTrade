@@ -103,7 +103,7 @@ const NewPass = () => {
 							gutterBottom
 							style={{ fontFamily: "Grand Hotel, cursive " }}
 						>
-							Instagram Clone
+							SocioTrade
 						</Typography>
 						{/* Check Password */}
 						{password !== "" && confirmPassword !== "" ? (

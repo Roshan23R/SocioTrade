@@ -71,10 +71,10 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex md:mt-14  max-w-4xl gap-2 mx-auto mb-8">
+      <div className="flex md:mt-14  max-w-5xl justify-around gap-x-20 mx-auto mb-8">
         <div className="w-full md:w-[70%]">
           <Stories />
-          <div>
+          <div className="px-2">
             {posts?.map((post) => (
               <HomePostCard post={post} key={post?.id} />
             ))}
@@ -93,7 +93,7 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <div className="hidden md:mt-7 md:block md:w-[30%] p-3">
+        <div className="hidden w-[30%] md:mt-7 md:block md:w-[30%] p-3">
           <div className="flex items-center justify-between w-full gap-2">
             <div>
               <img
@@ -124,10 +124,10 @@ const Home = () => {
           <div>
             {suggestUsers?.slice(1, 10).map((item, index) => (
               <div
-                className="flex items-center  justify-between my-2"
+                className="flex items-center justify-between my-2"
                 key={index}
               >
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-4 items-center">
                   <Link to={`/${item?.username}`}>
                     <img
                       src={item?.photoURL}

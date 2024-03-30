@@ -110,7 +110,7 @@ const Login = () => {
 					<CssBaseline />
 					<div className={classes.paper}>
 						<Typography className={classes.Logo} variant="h2" gutterBottom>
-							Instagram Clone
+							SocioTrade
 						</Typography>
 						{formatValidation ? (
 							<Alert variant="outlined" severity="error">

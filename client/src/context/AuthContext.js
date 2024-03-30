@@ -140,7 +140,7 @@ const AuthProvider = ({ children }) => {
       );
       await setDoc(doc(firestore, "user", `${user?.uid}`), {
         userId: user?.uid,
-        biography: "Hey there! I am new in this Instagram clone.",
+        biography: "Hey there! I am new in this SocioTrade.",
         categoryName: "Normal User",
         following: ["bZdyCDBdUjgxFxhXLRBGzQh05k12"],
         fullName: fullname,

@@ -116,7 +116,7 @@ const Footer = () => {
                 target="_blank"
                 href="https://www.instagram.com/web/lite/"
               >
-                <div className="">Instagram Lite</div>
+                <div className="">SocioTrade</div>
               </a>
             </div>
           </div>
@@ -125,14 +125,14 @@ const Footer = () => {
           <div className="">
             <div className="">
               <span className="font-semibold">&copy; {date.getFullYear()}</span>{" "}
-              Instagram Firebase by{" "}
+              SocioTrade{" "}
               <a
                 href="https://www.instagram.com/sahilverma.dev/"
                 target={"_blank"}
                 rel="nofollow noopener noreferrer"
                 className="font-semibold"
               >
-                Sahil Verma
+                Rakesh Roushan
               </a>
             </div>
           </div>

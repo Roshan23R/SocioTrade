@@ -172,7 +172,7 @@ const HomePostCard = ({ post }) => {
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="sm:mb-6 bg-white sm:border-[1px] rounded"
+      className="sm:mb-6 bg-white sm:border-[1px] rounded shadow-lg border-slate-500/30"
     >
       <div className="flex gap-3 items-center p-2 justify-between">
         <Link to={`/${post?.user?.username}`}>
