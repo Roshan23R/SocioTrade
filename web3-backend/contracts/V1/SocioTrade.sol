@@ -7,24 +7,18 @@ contract SocioTrade {
     address public owner;
     uint256 public constant POST_FEES = 1e2 wei;
     IERC20 private erc20;
-    mapping(address => bool) public whiteListUsers;
     mapping(uint256 => Post) public posts;
-
+    mapping(address => Deposit[]) private userDeposits;
     uint256 private postId;
     uint256 private depositId;
-
     constructor(address _erc20) {
         owner = msg.sender;
         erc20 = IERC20(_erc20);
     }
-
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner");
         _;
     }
-
-   
-
     enum PostStatus {
         CLOSED,
         ONGOING
@@ -33,6 +27,7 @@ contract SocioTrade {
     struct Deposit {
         uint256 amount;
         uint256 lockingDuration;
+        uint256 postId;
         uint256 startDate;
         uint256 endDate;
         address owner;
@@ -83,9 +78,14 @@ contract SocioTrade {
         _post.deposits[depositId] = Deposit(
             _amount,
             _lockingDuration,
+            _postId,
             block.timestamp,
             _endDate,
             msg.sender
+        );
+
+        userDeposits[msg.sender].push(
+            Deposit(_amount, _lockingDuration, _postId, block.timestamp, _endDate, msg.sender)
         );
     }
 
@@ -132,5 +132,9 @@ contract SocioTrade {
             erc20.transferFrom(address(this), _receiver, _amount),
             "Transfer failed"
         );
+    }
+
+    function getUserDeposits(address _user) external view returns (Deposit[] memory) {
+        return userDeposits[_user];
     }
 }
