@@ -180,7 +180,7 @@ const Login = () => {
               <p className="text-sm ">Get the app</p>
               <a
                 target="_blank"
-                href="https://github.com/theviralboy/instagram-firebase"
+                href="https://github.com/Roshan23R/SocioTrade"
                 className="text-sm"
               >
                 <img src="/images/get-it-on-github.png" className="h-16" />
