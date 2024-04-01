@@ -113,7 +113,7 @@ const Header = () => {
               />
             </Link>
           </div>
-         
+
           {user ? (
             <>
               <div className="flex items-center text-slate-800 text-2xl gap-3">
@@ -154,37 +154,36 @@ const Header = () => {
                           <li onClick={() => setMenuOpen(!menuOpen)}>
                             <Link
                               to={`/${user?.username}`}
-                              className="flex items-center gap-1"
+                              className="flex items-center gap-2"
                             >
                               <div className="w-50">
-                                <ProfileIcon size={60} />
+                                <ProfileIcon size={35} />
                               </div>
-                              <div>Profile</div>
+                              <div className="font-bold">Profile</div>
                             </Link>
                           </li>
                           <li onClick={() => setMenuOpen(!menuOpen)}>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <div>
                                 <SavedIcon size={35} />
                               </div>
-                              <div>Saved</div>
+                              <div className="font-bold">Saved</div>
                             </div>
                           </li>
                           <li onClick={() => setMenuOpen(!menuOpen)}>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <div>
                                 <SettingIcon size={35} />
                               </div>
-                              <div>Setting</div>
+                              <div className="font-bold">Setting</div>
                             </div>
                           </li>
                           <li onClick={() => setMenuOpen(!menuOpen)}>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <div>
                                 <SwitchIcon size={35} />
                               </div>
-                              <div>Switch</div>
-                              
+                              <div className="font-bold">Switch</div>
                             </div>
                           </li>
                         </ul>
@@ -201,13 +200,13 @@ const Header = () => {
                     )}
                   </div>
                 ) : (
-                  <NavLink to="/login" >
-                    <ProfileIcon size={60} />
+                  <NavLink to="/login">
+                    <ProfileIcon size={35} />
                   </NavLink>
                 )}
 
                 <ConnectButton
-                showBalance={true}
+                  showBalance={true}
                   accountStatus={{
                     smallScreen: "avatar",
                     largeScreen: "full",
@@ -232,11 +231,11 @@ const Header = () => {
 
               <ConnectButton
                 showBalance={true}
-                  accountStatus={{
-                    smallScreen: "avatar",
-                    largeScreen: "full",
-                  }}
-                />
+                accountStatus={{
+                  smallScreen: "avatar",
+                  largeScreen: "full",
+                }}
+              />
             </div>
           )}
         </div>
