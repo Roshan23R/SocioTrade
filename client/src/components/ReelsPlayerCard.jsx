@@ -18,27 +18,23 @@ import { AuthContext } from "../context/AuthContext";
 import { nFormatter } from "../utility";
 import { RWebShare } from "react-web-share";
 
-
-
 const ReelsVideoCard = ({ video }) => {
-
   const [comments, setComments] = useState(0);
   const [likes, setLikes] = useState(0);
   const [shares, setShares] = useState(0);
 
   useEffect(() => {
- 
-      const interval = setInterval(() => {
-          setComments(prevComments => prevComments + 1);
-          setLikes(prevLikes => prevLikes + 2);
-          setShares(prevShares => prevShares + 10);
-      }, 5000);
+    const interval = setInterval(() => {
+      setComments((prevComments) => prevComments + 1);
+      setLikes((prevLikes) => prevLikes + 2);
+      setShares((prevShares) => prevShares + 10);
+    }, 5000);
 
-      return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, []);
 
-
-  const { user, getTokenDetails,depositFunds,getYourDeposits } = useContext(AuthContext);
+  const { user, getTokenDetails, depositFunds, getYourDeposits } =
+    useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [isDepositOpen, setIsDepositOpen] = useState(false);
@@ -47,20 +43,21 @@ const ReelsVideoCard = ({ video }) => {
   const [buttonOpacity, setButtonOpacity] = useState(0);
   const [tokenDetails, setTokenDetails] = useState({});
   const [depositAmount, setDepositAmount] = useState(0);
-  const [depositsData , setDepositsData] = useState({
-    amount:0,
-    postId:0
+  const [depositsData, setDepositsData] = useState({
+    amount: 0,
+    postId: 0,
   });
+  const [investedArray, setInvestedArray] = useState([]);
   const onHandleDepositChange = (e) => {
-   setDepositAmount(e.target.value);
-  }
+    setDepositAmount(e.target.value);
+  };
 
-  const handleDepositLocked=async(e)=>{
+  const handleDepositLocked = async (e) => {
     e.preventDefault();
     console.log(depositAmount);
-    await depositFunds(depositAmount,1);
+    await depositFunds(depositAmount, 1);
     // setIsDepositOpen(false);
-  }
+  };
   const videoRef = useRef();
 
   useEffect(() => {
@@ -68,15 +65,16 @@ const ReelsVideoCard = ({ video }) => {
       if (user) {
         const tokenDetails = await getTokenDetails();
         const data = await getYourDeposits();
+        setInvestedArray(data.investArray);
         setDepositsData({
-          amount:data.investedAmount,
-          postId:data.postId
+          amount: data.investedAmount,
+          postId: data.postId,
         });
         console.log(data);
         setTokenDetails(tokenDetails);
       }
     })();
-  },[user]);
+  }, [user]);
   const callBack = (entries) => {
     const [entry] = entries;
     setIsPlaying(entry.isIntersecting);
@@ -118,7 +116,6 @@ const ReelsVideoCard = ({ video }) => {
         className="h-full w-full cursor-pointer object-cover"
         src={video?.src}
         preload="none"
-        
         playsInline
         muted={false}
         loading="lazy"
@@ -160,16 +157,16 @@ const ReelsVideoCard = ({ video }) => {
         <div className="text-white text-center text-3xl">
           <button onClick={() => setCommentsOpen(true)}>
             <CommentIcon />
-            <p className="text-xs mt-2">
-              {comments}
-            </p>
+            <p className="text-xs mt-2">{comments}</p>
           </button>
         </div>
         <div className="text-white text-center text-3xl">
           <button onClick={() => setIsDepositOpen(true)}>
             <FaMoneyCheckAlt />
             <p className="text-xs mt-0 font-semibold">
-              <span className="text-green-400">{depositsData?.amount} DEGO</span>
+              <span className="text-green-400">
+                {depositsData?.amount} DEGO
+              </span>
             </p>
           </button>
         </div>
@@ -309,10 +306,33 @@ const ReelsVideoCard = ({ video }) => {
               <CloseIcon />
             </button>
           </div>
+          <div className="h-[400px] text-black z-50 flex flex-col gap-4 shadow-xl p-3 rounded-xl my-2 overflow-scroll">
+            {investedArray.map((invested, i) => {
+              return (
+                <div
+                  key={i}
+                  className="flex items-center bg-white rounded-xl gap-2 w-full justify-between p-2"
+                >
+                  <div className="flex-grow">
+                    <a href="#" className="font-bold text-lg">
+                      Deposit {i + 1} <span className="text-sm text-blue-400">{invested.startDate}</span>
+                    </a>
+                  </div>
+                  <div>
+                    <button className="bg-blue-400 px-4 py-1 shadow-lg rounded-md font-bold">
+                      <p>{invested.amount} DEGO</p>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           <div className="h-[100px] text-black z-50 flex flex-col gap-4 p-3 rounded-xl my-2 overflow-scroll">
             <div className="flex items-center bg-white rounded-xl flex-col gap-2 w-full justify-between px-6 p-3">
               <div>
-                <h1 className="text-green-400 font-bold text-start">Available Balance</h1>
+                <h1 className="text-green-400 font-bold text-start">
+                  Available Balance
+                </h1>
               </div>
               <div className="flex justify-between w-full items-baseline">
                 <p className="font-bold uppercase text-lg">
@@ -339,7 +359,10 @@ const ReelsVideoCard = ({ video }) => {
                   name="depositAmount"
                   onChange={(e) => onHandleDepositChange(e)}
                 />
-                <button onClick={(e)=>handleDepositLocked(e)} className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm">
+                <button
+                  onClick={(e) => handleDepositLocked(e)}
+                  className="rounded-lg bg-blue-500 font-bold text-white px-3 py-2 text-sm"
+                >
                   Deposit
                 </button>
               </div>

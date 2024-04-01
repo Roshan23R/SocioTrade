@@ -39,6 +39,43 @@ const AuthProvider = ({ children }) => {
   }, [chain?.id]);
   const signer = useEthersSigner(activeChain);
 
+  function formatTimestamp(timestamp) {
+    const date = new Date(timestamp * 1000);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const year = date.getFullYear();
+    const month = months[date.getMonth()];
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    // Add leading zero for single-digit numbers
+    const formattedMonth = month.padStart(2, "0");
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+
+    const formattedDate = `${formattedMonth} ${formattedDay}, ${year}`;
+    const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    return `${formattedDate} ${formattedTime}`;
+  }
   /**
    *
    * @param {any contract Address} contractAddress
@@ -123,14 +160,20 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  function sellYourFunds(amount, postId) {
+  function sellYourFunds(  _postId,
+     _depositID,
+     _amount,
+     _likes,
+     _views,
+     _shares,
+     _followers) {
     try {
       const contractInstance = getContractInstance(
         mainContractAddress,
         mainContractABI
       );
       let txId = toast.loading("Selling your funds...");
-      const tx = contractInstance.sellYourFunds(amount, postId, {
+      const tx = contractInstance.sellYourFunds(_amount, _postId, {
         from: address,
       });
       tx.wait();
@@ -149,6 +192,7 @@ const AuthProvider = ({ children }) => {
         mainContractABI
       );
       const deposits = await contractInstance.getUserDeposits(address);
+      let investArray = [];
       let investedAmount = 0;
       let postId = +deposits[0].postId;
       for (let i = 0; i < deposits.length; i++) {
@@ -157,8 +201,14 @@ const AuthProvider = ({ children }) => {
         );
 
         investedAmount += initial;
+
+        investArray.push({
+          postId: +deposits[i].postId,
+          amount: initial,
+          startDate : formatTimestamp(+deposits[i].startDate).toString().slice(0, 15),
+        });
       }
-      return { investedAmount, postId };
+      return { investedAmount, postId ,investArray};
     } catch (error) {
       console.log(error);
     }
