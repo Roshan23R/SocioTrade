@@ -160,23 +160,34 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  function sellYourFunds(  _postId,
-     _depositID,
-     _amount,
-     _likes,
-     _views,
-     _shares,
-     _followers) {
+  async function sellYourFunds(
+    _postId,
+    _depositID,
+    _amount,
+    _likes,
+    _views,
+    _shares,
+    _followers
+  ) {
     try {
-      const contractInstance = getContractInstance(
+      const contractInstance = await getContractInstance(
         mainContractAddress,
         mainContractABI
       );
       let txId = toast.loading("Selling your funds...");
-      const tx = contractInstance.sellYourFunds(_amount, _postId, {
-        from: address,
-      });
-      tx.wait();
+      const tx = await contractInstance.sellFunds(
+        _postId,
+        _depositID,
+        _amount,
+        _likes,
+        _views,
+        _shares,
+        _followers,
+        {
+          from: address,
+        }
+      );
+      await tx.wait();
       toast.success("Funds Sold", { id: txId });
       return tx;
     } catch (error) {
@@ -205,10 +216,12 @@ const AuthProvider = ({ children }) => {
         investArray.push({
           postId: +deposits[i].postId,
           amount: initial,
-          startDate : formatTimestamp(+deposits[i].startDate).toString().slice(0, 15),
+          startDate: formatTimestamp(+deposits[i].startDate)
+            .toString()
+            .slice(0, 15),
         });
       }
-      return { investedAmount, postId ,investArray};
+      return { investedAmount, postId, investArray };
     } catch (error) {
       console.log(error);
     }

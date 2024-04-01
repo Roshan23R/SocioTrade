@@ -33,8 +33,13 @@ const ReelsVideoCard = ({ video }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const { user, getTokenDetails, depositFunds, getYourDeposits } =
-    useContext(AuthContext);
+  const {
+    user,
+    getTokenDetails,
+    depositFunds,
+    getYourDeposits,
+    sellYourFunds,
+  } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [isDepositOpen, setIsDepositOpen] = useState(false);
@@ -98,6 +103,34 @@ const ReelsVideoCard = ({ video }) => {
     setLiked(!liked);
   };
 
+  const yieldClaim = async (
+    _postId,
+    _depositID,
+    _amount,
+    _likes,
+    _views,
+    _shares,
+    _followers
+  ) => {
+    console.log(
+      _postId,
+      _depositID,
+      _amount,
+      _likes,
+      _views,
+      _shares,
+      _followers
+    );
+    await sellYourFunds(
+      _postId,
+      _depositID,
+      _amount,
+      _likes,
+      _views,
+      _shares,
+      _followers
+    );
+  };
   useEffect(() => {
     const observer = new IntersectionObserver(callBack, options);
     if (videoRef.current) observer.observe(videoRef?.current);
@@ -315,11 +348,27 @@ const ReelsVideoCard = ({ video }) => {
                 >
                   <div className="flex-grow">
                     <a href="#" className="font-bold text-lg">
-                      Deposit {i + 1} <span className="text-sm text-blue-400">{invested.startDate}</span>
+                      Deposit {i + 1}{" "}
+                      <span className="text-sm text-blue-400">
+                        {invested.startDate}
+                      </span>
                     </a>
                   </div>
                   <div>
-                    <button className="bg-blue-400 px-4 py-1 shadow-lg rounded-md font-bold">
+                    <button
+                      onClick={(e) =>
+                        yieldClaim(
+                          invested.postId,
+                          i,
+                          invested.amount,
+                          40,
+                          50,
+                          20,
+                          100
+                        )
+                      }
+                      className="bg-blue-400 px-4 py-1 shadow-lg rounded-md font-bold"
+                    >
                       <p>{invested.amount} DEGO</p>
                     </button>
                   </div>
