@@ -22,6 +22,7 @@ import { RiExchangeFundsLine as SwitchIcon } from "react-icons/ri";
 
 // firebase
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { toast } from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
 import { auth, firestore, storage } from "../firebase/config";
 import {
@@ -183,6 +184,7 @@ const Header = () => {
                                 <SwitchIcon size={35} />
                               </div>
                               <div>Switch</div>
+                              
                             </div>
                           </li>
                         </ul>

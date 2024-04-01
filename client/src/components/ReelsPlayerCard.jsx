@@ -18,8 +18,27 @@ import { AuthContext } from "../context/AuthContext";
 import { nFormatter } from "../utility";
 import { RWebShare } from "react-web-share";
 
+
+
 const ReelsVideoCard = ({ video }) => {
-  const { user, getTokenDetails,depositFunds } = useContext(AuthContext);
+
+  const [comments, setComments] = useState(0);
+  const [likes, setLikes] = useState(0);
+  const [shares, setShares] = useState(0);
+
+  useEffect(() => {
+ 
+      const interval = setInterval(() => {
+          setComments(prevComments => prevComments + 1);
+          setLikes(prevLikes => prevLikes + 2);
+          setShares(prevShares => prevShares + 10);
+      }, 5000);
+
+      return () => clearInterval(interval);
+  }, []);
+
+
+  const { user, getTokenDetails,depositFunds,getYourDeposits } = useContext(AuthContext);
   const [liked, setLiked] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [isDepositOpen, setIsDepositOpen] = useState(false);
@@ -28,7 +47,10 @@ const ReelsVideoCard = ({ video }) => {
   const [buttonOpacity, setButtonOpacity] = useState(0);
   const [tokenDetails, setTokenDetails] = useState({});
   const [depositAmount, setDepositAmount] = useState(0);
-
+  const [depositsData , setDepositsData] = useState({
+    amount:0,
+    postId:0
+  });
   const onHandleDepositChange = (e) => {
    setDepositAmount(e.target.value);
   }
@@ -45,10 +67,16 @@ const ReelsVideoCard = ({ video }) => {
     (async () => {
       if (user) {
         const tokenDetails = await getTokenDetails();
+        const data = await getYourDeposits();
+        setDepositsData({
+          amount:data.investedAmount,
+          postId:data.postId
+        });
+        console.log(data);
         setTokenDetails(tokenDetails);
       }
     })();
-  });
+  },[user]);
   const callBack = (entries) => {
     const [entry] = entries;
     setIsPlaying(entry.isIntersecting);
@@ -126,14 +154,14 @@ const ReelsVideoCard = ({ video }) => {
         >
           <button onClick={ToggleLike}>
             {liked ? <LikedIcon className="text-red-500" /> : <LikeIcon />}
-            <p className="text-xs mt-2">{nFormatter(video?.data?.likes)}</p>
+            <p className="text-xs mt-2">{likes}</p>
           </button>
         </div>
         <div className="text-white text-center text-3xl">
           <button onClick={() => setCommentsOpen(true)}>
             <CommentIcon />
             <p className="text-xs mt-2">
-              {nFormatter(video?.data?.comments?.length)}
+              {comments}
             </p>
           </button>
         </div>
@@ -141,7 +169,7 @@ const ReelsVideoCard = ({ video }) => {
           <button onClick={() => setIsDepositOpen(true)}>
             <FaMoneyCheckAlt />
             <p className="text-xs mt-0 font-semibold">
-              <span className="text-green-400">Invest</span>
+              <span className="text-green-400">{depositsData?.amount} DEGO</span>
             </p>
           </button>
         </div>
@@ -156,7 +184,7 @@ const ReelsVideoCard = ({ video }) => {
           >
             <button>
               <ShareIcon />
-              <p className="text-xs mt-2">{nFormatter(video?.data?.shares)}</p>
+              <p className="text-xs mt-2">{shares}</p>
             </button>
           </RWebShare>
         </div>

@@ -85,13 +85,12 @@ const AuthProvider = ({ children }) => {
 
   const depositFunds = async (amount, postId) => {
     try {
-
       let approveId = toast.loading("Approving transaction...");
       const degoTokenContract = await getContractInstance(
         tokenAddress,
         tokenAbi
       );
-      //make amount as per decimals 
+      //make amount as per decimals
       amount = BigNumber.from(amount).mul(
         BigNumber.from(10).pow(await degoTokenContract.decimals())
       );
@@ -142,6 +141,28 @@ const AuthProvider = ({ children }) => {
       toast.error("Error in selling funds");
     }
   }
+
+  const getYourDeposits = async () => {
+    try {
+      const contractInstance = await getContractInstance(
+        mainContractAddress,
+        mainContractABI
+      );
+      const deposits = await contractInstance.getUserDeposits(address);
+      let investedAmount = 0;
+      let postId = +deposits[0].postId;
+      for (let i = 0; i < deposits.length; i++) {
+        let initial = +BigNumber.from(deposits[i]?.amount).div(
+          BigNumber.from(10).pow(18)
+        );
+
+        investedAmount += initial;
+      }
+      return { investedAmount, postId };
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     if (!signer) return;
   }, [signer, address]);
@@ -233,7 +254,16 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, signUp, getTokenDetails,depositFunds,sellYourFunds }}
+      value={{
+        user,
+        login,
+        logout,
+        signUp,
+        getTokenDetails,
+        depositFunds,
+        sellYourFunds,
+        getYourDeposits,
+      }}
     >
       {loading || children}
     </AuthContext.Provider>

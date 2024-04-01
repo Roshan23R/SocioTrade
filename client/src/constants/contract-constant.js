@@ -571,32 +571,8 @@ export const tokenAbi = [
   },
 ];
 
-export const mainContractAddress = "0x26BcBF4959F946555c066A120d4e52d25668EE58";
+export const mainContractAddress = "0xeE600083Fd9b33d2cE5E82267c22283840287F75";
 export const mainContractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_erc20",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "POST_FEES",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
 	{
 		"inputs": [
 			{
@@ -611,19 +587,6 @@ export const mainContractABI = [
 			}
 		],
 		"name": "_transfer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "_transferFunds",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -655,6 +618,98 @@ export const mainContractABI = [
 			}
 		],
 		"name": "depositFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_erc20",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newEngagementRate",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "revenue",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "expenses",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "profitLoss",
+				"type": "int256"
+			}
+		],
+		"name": "LogUpdateEngagement",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "receive",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_postId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_depositID",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_likes",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_views",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_shares",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_followers",
+				"type": "uint256"
+			}
+		],
+		"name": "sellFunds",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -724,6 +779,19 @@ export const mainContractABI = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "POST_FEES",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -765,36 +833,6 @@ export const mainContractABI = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "receive",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_postId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_depositID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "sellFunds",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];

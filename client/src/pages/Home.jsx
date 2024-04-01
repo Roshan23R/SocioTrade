@@ -20,7 +20,7 @@ import { AuthContext } from "../context/AuthContext";
 import Stories from "../components/Stories";
 import Footer from "../components/Footer";
 import { FakeUsers } from "../constants/fakeData";
-
+import { Toaster,toast } from "react-hot-toast";
 const Home = () => {
   const { user } = useContext(AuthContext);
   const [suggestUsers, setSuggestUsers] = useState();
@@ -72,8 +72,10 @@ const Home = () => {
     <>
       <Header />
       <div className="flex md:mt-14  max-w-5xl gap-x-15 mx-auto mb-8">
+      <Toaster position="bottom-right" />
         <div id="feed" className="w-full md:w-[70%] overflow-auto justify-center">
           <Stories />
+        
           <div className=" border-gray-200 rounded-md shadow-white"> 
             {posts?.map((post) => (
               <HomePostCard post={post} key={post?.id} />

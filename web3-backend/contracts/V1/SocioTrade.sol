@@ -11,10 +11,31 @@ contract SocioTrade {
     mapping(address => Deposit[]) private userDeposits;
     uint256 private postId;
     uint256 private depositId;
+
+    // constant Variables
+
+    uint256 constant likesWeight = 1;
+    uint256 constant commentsWeight = 2;
+    uint256 constant sharesWeight = 3;
+    uint256 constant viewsWeight = 4;
+    uint256 constant followersWeight = 5;
+
+    uint256 previousEngagementRate = 0;
+    int256 previousProfitLoss = 0;
+    uint256 previousShares = 0;
+
+    event LogUpdateEngagement(
+        uint256 newEngagementRate,
+        uint256 revenue,
+        uint256 expenses,
+        int256 profitLoss
+    );
+
     constructor(address _erc20) {
         owner = msg.sender;
         erc20 = IERC20(_erc20);
     }
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner");
         _;
@@ -45,9 +66,12 @@ contract SocioTrade {
 
     function receive() external payable {}
 
-    function createPost(bool _wantToMonetizeThisPost) external payable  {
+    function createPost(bool _wantToMonetizeThisPost) external payable {
         require(_wantToMonetizeThisPost, "Post is not Monetized !!!");
-        require(msg.value >= POST_FEES, "Insufficient Funds to pay Creation Fees");
+        require(
+            msg.value >= POST_FEES,
+            "Insufficient Funds to pay Creation Fees"
+        );
 
         postId++;
 
@@ -60,7 +84,7 @@ contract SocioTrade {
         _post.status = PostStatus.ONGOING;
     }
 
-    function depositFunds(uint256 _amount, uint256 _postId) external  {
+    function depositFunds(uint256 _amount, uint256 _postId) external {
         require(_amount > 0, "Null amount");
         require(_postId <= postId, "Not valid Post");
 
@@ -85,46 +109,57 @@ contract SocioTrade {
         );
 
         userDeposits[msg.sender].push(
-            Deposit(_amount, _lockingDuration, _postId, block.timestamp, _endDate, msg.sender)
+            Deposit(
+                _amount,
+                _lockingDuration,
+                _postId,
+                block.timestamp,
+                _endDate,
+                msg.sender
+            )
         );
     }
 
-    function sellFunds(uint256 _postId,uint _depositID,uint _amount) external  {
-        require(_amount>0,"Amount should be greater than 0");
+    function sellFunds(
+        uint256 _postId,
+        uint256 _depositID,
+        uint256 _amount,
+        uint256 _likes,
+        uint256 _views,
+        uint256 _shares,
+        uint256 _followers
+    ) external {
+        require(_amount > 0, "Amount should be greater than 0");
         Post storage _post = posts[_postId];
-        require(_post.status == PostStatus.ONGOING, "Post is not live to release funds");
+        require(
+            _post.status == PostStatus.ONGOING,
+            "Post is not live to release funds"
+        );
         require(_post.endTime > block.timestamp, "Post is Ended !!!");
         Deposit storage _depositData = _post.deposits[_depositID];
         require(_depositData.owner == msg.sender, "Not valid owner");
-        require(_depositData.amount>= _amount,"Insufficient Funds to release");
-        uint rewardAmount = _getPostScore(10,10,10,10,10);
 
         require(
-            erc20.transfer(msg.sender,rewardAmount*(10**erc20.decimals()) + _amount),
+            _depositData.amount >= _amount,
+            "Insufficient Funds to release"
+        );
+        uint256 rewardAmount = _updateEngagement(
+            _amount,
+            _likes,
+            _shares,
+            _views,
+            _followers
+        );
+        require(
+            erc20.transfer(msg.sender, rewardAmount),
             "withdraw(uint256 _depositNumber) : TRANSFER FAILED"
         );
-        
+
         _post.amount -= _amount;
         _depositData.amount -= _amount;
     }
 
-    function _transferFunds(uint _amount) external onlyOwner {
-       require(
-            erc20.transferFrom(address(this), msg.sender,_amount),
-            "Transfer failed"
-        );
-    }
-
-    function _getPostScore(
-        uint256 _comments,
-        uint256 _views,
-        uint256 _shares,
-        uint256 _saves,
-        uint256 _followers
-    ) private pure returns (uint256) {
-        return ((_comments + _views + _shares + _saves) / (_followers));
-    }
-
+  
     function _transfer(uint256 _amount, address _receiver) public onlyOwner {
         erc20.approve(address(this), _amount);
         erc20.approve(address(this), _amount);
@@ -134,7 +169,76 @@ contract SocioTrade {
         );
     }
 
-    function getUserDeposits(address _user) external view returns (Deposit[] memory) {
+    function getUserDeposits(address _user)
+        external
+        view
+        returns (Deposit[] memory)
+    {
         return userDeposits[_user];
+    }
+
+    function _calculateEngagementRate(
+        uint256 likes,
+        uint256 shares,
+        uint256 views,
+        uint256 followers
+    ) private pure returns (uint256) {
+        return ((likes + shares + views) / followers) * 10;
+    }
+
+    function _updateEngagement(
+        uint256 fixedExpenses,
+        uint256 newLikes,
+        uint256 newShares,
+        uint256 newViews,
+        uint256 newFollowers
+    ) private returns (uint256) {
+        uint256 newEngagementRate = _calculateEngagementRate(
+            newLikes,
+            newShares,
+            newViews,
+            newFollowers
+        );
+        int256 engagementChange = int256(newEngagementRate) -
+            int256(previousEngagementRate);
+
+        // Calculate revenue and expenses
+        uint256 revenue = _calculateRevenue(
+            newLikes,
+            newShares,
+            newViews,
+            newFollowers
+        );
+        uint256 expenses = fixedExpenses;
+
+        // Calculate profit/loss
+        int256 profitLoss = int256(revenue) - int256(expenses);
+
+        emit LogUpdateEngagement(
+            newEngagementRate,
+            revenue,
+            expenses,
+            profitLoss
+        );
+
+        // Update the previous engagement rate, profit/loss, and shares for the next iteration
+        previousEngagementRate = newEngagementRate;
+        previousProfitLoss = profitLoss;
+        previousShares = newShares;
+
+        return revenue;
+    }
+
+    function _calculateRevenue(
+        uint256 likes,
+        uint256 shares,
+        uint256 views,
+        uint256 followers
+    ) private pure returns (uint256) {
+        return
+            ((likes * likesWeight) +
+                (shares * sharesWeight) +
+                (views * viewsWeight) +
+                (followers * followersWeight)) / 10; // Some arbitrary conversion rate to monetary value
     }
 }

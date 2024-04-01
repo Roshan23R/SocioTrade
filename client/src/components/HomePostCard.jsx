@@ -286,7 +286,7 @@ const HomePostCard = ({ post }) => {
               <SendIcon color="white" />
             </button>
             <button onClick={() => setIsDepositOpen(true)}>
-              <FaMoneyCheckAlt />
+              <FaMoneyCheckAlt color="white" />
             </button>
           </div>
           <button onClick={saved ? unsavePost : savePost}>

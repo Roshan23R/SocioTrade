@@ -25,11 +25,10 @@ const Routing = () => {
 
   return (
     <>
+      
       <BrowserRouter>
-	  <Toaster
-		position="top-right"
-      />
         <Switch>
+   
           {/* Public routes */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
@@ -51,7 +50,6 @@ const Routing = () => {
           {/* <Route component={NotFound} /> */}
         </Switch>
       </BrowserRouter>
-      
     </>
   );
 };
