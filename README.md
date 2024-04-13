@@ -1,2 +1,3 @@
-[Major Project -SocioTrade -Tokenized Content Posting in Social Media (1).pdf](https://github.com/Roshan23R/SocioTrade/files/14967106/Major.Project.-SocioTrade.-Tokenized.Content.Posting.in.Social.Media.1.pdf)
-[Uploading Tokenized Content Posting in Social Media.pdf…]()
+[SocioTrade -Tokenized Content Posting in Social Media.pdf](https://github.com/Roshan23R/SocioTrade/files/14967110/Major.Project.-SocioTrade.-Tokenized.Content.Posting.in.Social.Media.pdf)
+
+[Tokenized Content Posting in Social Media.pdf](https://github.com/Roshan23R/SocioTrade/files/14967109/Tokenized.Content.Posting.in.Social.Media.pdf)
